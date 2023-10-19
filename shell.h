@@ -51,7 +51,7 @@ void processInput(char *inputLine, char **av);
 int main(int ac, char **av);
 void handleNonExecutable(char **arguments, char **av, char *inputLine);
 void executeExecutable(char **arguments, char **av);
-int manage_invalid_command(char **args, char *progname, int count);
+int handle_invalid_command(char **args, char *progname, int count);
 void display_prompt(int mode);
 
 void _start(void);
