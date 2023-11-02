@@ -65,7 +65,7 @@ char *modified_strtok(char *str, const char *delims);
 void free_str_array(int total, char *string_set[]);
 void display_error(char *prog_name, int cmd_seq, char *user_cmd);
 void output_string(char *txt);
-int output_char(char character_to display);
+int output_char(char character_to_display);
 
 /* Global Variables */
 extern char **environ;
