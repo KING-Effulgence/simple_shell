@@ -1,116 +1,97 @@
 #include "shell.h"
 
 /**
- * display_prompt - Display the shell prompt if in interactive mode.
- *
- * This function prints the shell prompt (a dollar sign '$')
- * to the standard output
- * if the shell is in interactive mode.
- *
- * @mode: Mode of operation (1 for interactive, 0 for non-interactive).
+ * display_prompt - Display shell prompt if it is interactive mode.
+ * @mode: Mode of of operation.
  */
-void display_prompt(int mode)
+void display_promptt(int mode)
 {
 	if (mode)
-	write(1, "$ ", 2);
+		write(1, "$ ", 2);
 }
-/**
- * handle_invalid_command - Manage cases where a command is not found.
- *
- * @args: Array of command arguments.
- * @progname: The name of the program.
- * @cmd_count: The count of command execution.
- *
- * Return: An error code (127).
- */
-int handle_invalid_command(char **args, char *progname, int cmd_count)
-{
-	char cmd_count_str = cmd_count + '0';
 
-	display_error(progname, cmd_count_str, args[0]);
+/**
+ * manage_invalid_command - Handle when the command is not found.
+ * @args: Argumentsof the array.
+ * @progname: Program name.
+ * @count: Command execution counts.
+ *
+ * Return: Error number.
+ */
+int handle_invalid_command(char **args, char *progname, int count)
+{
+	char cmd_count = count + '0';
+
+	display_error(progname, cmd_count, args[0]);
 	free(args);
 	return (127);
 }
 
 /**
- * process_shell - Process shell operations and execute commands.
- *
- * @buffer: Input buffer.
- * @argv: Argument values.
- * @count: Command count.
+ * process_shell - Process the shell operations and commands
+ * @buffer: Input a buffer.
+ * @argv: Argument of values.
+ * @count: Commmand of count.
  *
  * Return: Error number.
  */
-int process_shell(char *buffer, char **argv, int count)
+int process_the_shell(char *buffer, char **argv, int count)
 {
-	char **args = NULL;
-	char *command_full_path = NULL;
+	char **args = NULL, *command_full_path = NULL;
 
 	remove_comment(buffer);
-
 	args = tokenize(buffer);
-
 	if (!args[0])
 	{
 		free(args);
 		return (0);
 	}
-
-	if (is_builtin_command(args[0]))
+	if (access(args[0], X_OK) == -1 &&
+			handle_builtin_commands(args, argv[0], buffer) != 1)
 	{
-		run_builtin_command(args[0]);
-	}
-	else
-	{
-		command_full_path = find_command_path(args[0]);
-
+		command_full_path = find_cmd_path(fetch_path_env(), args[0]);
 		if (!command_full_path)
 		{
-			return (handle_invalid_command(args[0], argv[0], count));
+			return (manage_invalid_command(args, argv[0], count));
 		}
-
-		run_external_command(command_full_path, args);
+		run_full_cmd(args, argv, command_full_path);
+		return (0);
 	}
-
+	run_command(args, argv);
 	return (0);
 }
+
+
 /**
- * main - Entry point for the shell program.
+ * main - Main function shell.
+ * @argc: Argument of count.
+ * @argv: Argument of values.
  *
- * @argc: Argument count.
- * @argv: Argument values.
- *
- * Return: Always returns 0.
+ * Return: Exit the status.
  */
 int main(int argc, char **argv)
 {
-	int interactive_mode = isatty(0);
-	int command_count = 0;
-	char *input_buffer = NULL;
+	int mode = isatty(0), count = 0;
+	char *buffer = NULL;
 	size_t buffer_size = 0;
-	ssize_t input_length;
+	ssize_t num_length;
 
 	(void)argc;
-
 	while (1)
 	{
-		command_count++;
-		display_prompt(interactive_mode);
-
-		input_length = getline(&input_buffer, &buffer_size, stdin);
-
-		if (input_length == -1)
+		count++;
+		display_prompt(mode);
+		num_length = getline(&buffer, &buffer_size, stdin);
+		if (num_length == -1)
 		{
-			free(input_buffer);
+			free(buffer);
 			exit(errno);
 		}
-
-		if (process_shell(input_buffer, argv, command_count))
+		if (process_shell(buffer, argv, count))
 		{
-			free(input_buffer);
+			free(buffer);
 			exit(127);
 		}
 	}
-
 	return (0);
 }
