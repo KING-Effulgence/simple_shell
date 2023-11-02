@@ -52,7 +52,7 @@ int process_the_shell(char *buffer, char **argv, int count)
 		command_full_path = find_cmd_path(fetch_path_env(), args[0]);
 		if (!command_full_path)
 		{
-			return (manage_invalid_command(args, argv[0], count));
+			return (handle_invalid_command(args, argv[0], count));
 		}
 		run_full_cmd(args, argv, command_full_path);
 		return (0);
@@ -87,7 +87,7 @@ int main(int argc, char **argv)
 			free(buffer);
 			exit(errno);
 		}
-		if (process_shell(buffer, argv, count))
+		if (process_the_shell(buffer, argv, count))
 		{
 			free(buffer);
 			exit(127);
