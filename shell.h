@@ -21,15 +21,15 @@
 char **tokenize(char *input_str);
 void remove_comment(char *line);
 void fixComments(char *inputLine);
-void display_prompt(int mode);
-int process_shell(char *buffer, char **argv, int count);
+void display_promptt(int mode);
+int process_the_shell(char *buffer, char **argv, int count);
 int str_compare(const char *s1, const char *s2, size_t n);
 int tokenize_directory_paths(char *paths, char **path_tokens);
 char *find_cmd_path(char *paths, char *cmd);
 char *fetch_path_env(void);
 int run_full_cmd(char **cmd_args, char **cmd_argv, char *full_cmd_path);
 int run_command(char **cmd_args, char **cmd_argv);
-int handle_invalid_command(char **args, char *progname, int cmd_count);
+int handle_invalid_command(char **args, char *progname, int count);
 int handle_builtin_commands(char **args, char *progname, char *buffer);
 void print_environment(char **env);
 void execute_builtin_env(char **env);

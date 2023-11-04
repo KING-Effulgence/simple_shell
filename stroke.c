@@ -1,58 +1,18 @@
 #include "shell.h"
 
 /**
- * char_is_delimiter - Checks if a character is a delimiter.
- * @ch: The character to check.
- * @delims: String containing delimiter characters.
+ * char_is_delimiter - Verifies a given character 'ch'.
+ * @ch: Character to be verify.
+ * @delims: String containing the delimiter characters.
  *
- * Return: 1 if 'ch' is a delimiter, 0 otherwise.
- */
-int char_is_delimiter(char *ch, const char *delims);
-
-/**
- * modified_strtok - Tokenizes a string using specified delimiters.
- * @str: The string to tokenize.
- * @delims: Delimiter characters.
- *
- * Return: Pointer to the next available token or NULL if none are left.
- */
-char *modified_strtok(char *str, const char *delims);
-
-/**
- * main - Entry point of the program.
- *
- * Return: Always returns 0.
- */
-int main(void)
-{
-	char input[] = "This is a sample sentence";
-	const char delimiters[] = " \n";
-	char *token;
-
-	token = modified_strtok(input, delimiters);
-
-	while (token != NULL)
-	{
-		printf("Token: %s\n", token);
-		token = modified_strtok(NULL, delimiters);
-	}
-
-	return (0);
-}
-
-/**
- * char_is_delimiter - Checks if a character is a delimiter.
- * @ch: The character to check.
- * @delims: String containing delimiter characters.
- *
- * Return: 1 if 'ch' is a delimiter, 0 otherwise.
+ * Return: 1 if 'ch' is among the delimiters, otherwise 0.
  */
 int char_is_delimiter(char *ch, const char *delims)
 {
+	int idx = 0;
+
 	if (ch == NULL || delims == NULL)
 		return (0);
-
-	int idx = 0;
 
 	while (delims[idx] != '\0')
 	{
@@ -64,15 +24,16 @@ int char_is_delimiter(char *ch, const char *delims)
 }
 
 /**
- * modified_strtok - Tokenizes a string using specified delimiters.
- * @str: The string to tokenize.
- * @delims: Delimiter characters.
+ * modified_strtok - Breaks the string into tokens using the
+ * specified delimiters.
+ * @str: The string for tokenization.
+ * @delims: Delimiter of characters.
  *
- * Return: Pointer to the next available token or NULL if none are left.
+ * Return: Pointer available token or NULL if there are none left.
  */
 char *modified_strtok(char *str, const char *delims)
 {
-	static char remainder;
+	static char *remainder;
 	char *token_start, *token_end;
 
 	if (str != NULL)
@@ -94,7 +55,7 @@ char *modified_strtok(char *str, const char *delims)
 		remainder = NULL;
 	}
 
-	while (remainder && char_is_delimiter(remainder, delims))
+	while (char_is_delimiter(remainder, delims) && remainder)
 	{
 		remainder++;
 	}
