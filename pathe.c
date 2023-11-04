@@ -10,19 +10,17 @@
  */
 char *fetch_path_env(void)
 {
-	int index;
+	int idx;
 	char *clonedPath = NULL;
 
-	for (index = 0; environ[index] != NULL; index++)
+	for (idx = 0; environ[idx] != NULL; idx++)
 	{
-		if (compare_strings(environ[index], "PATH", 4) == 0)
+		if (compare_strings(environ[idx], "PATH", 4) == 0)
 		{
-			clonedPath = string_dup(&environ[index][5]);
-			break; /* Exit the loop when PATH is found */
+			clonedPath = string_dup(&environ[idx][5]);
+			break; /*Exit loop once PATH is found*/
 		}
 	}
-
-	/* Remember to free the clonedPath if it's not NULL */
+	/*Free this return value if it's not NULL */
 	return (clonedPath);
 }
-
