@@ -26,6 +26,7 @@ int process_the_shell(char *buffer, char **argv, int count);
 int str_compare(const char *s1, const char *s2, size_t n);
 int tokenize_directory_paths(char *paths, char **path_tokens);
 char *find_cmd_path(char *paths, char *cmd);
+int execute_command(const char *command, char **arguments);
 char *fetch_path_env(void);
 int run_full_cmd(char **cmd_args, char **cmd_argv, char *full_cmd_path);
 int run_command(char **cmd_args, char **cmd_argv);
@@ -39,6 +40,9 @@ int ModifyEnv(char *newVal, char **args);
 int UnsetEnv(char **args);
 int RunBuiltinCmds(char **args);
 int custom_exit(char **args);
+int validate_exit_status(char *status_str);
+void custom_exit(int exit_status);
+int main(int argc, char **argv);
 
 void print_env(void);
 void ReportEnvError(char **cmd_tokens);
