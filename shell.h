@@ -39,10 +39,8 @@ int SetEnvVar(char **args);
 int ModifyEnv(char *newVal, char **args);
 int UnsetEnv(char **args);
 int RunBuiltinCmds(char **args);
-int custom_exit(char **args);
 int validate_exit_status(char *status_str);
-void custom_exit(int exit_status);
-int main(int argc, char **argv);
+int custom_exit(char **args);
 
 void print_env(void);
 void ReportEnvError(char **cmd_tokens);
